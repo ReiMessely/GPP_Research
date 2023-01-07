@@ -38,6 +38,7 @@ public class SimpleCamMovement : MonoBehaviour
         if (Input.mouseScrollDelta.y != 0) 
         {
             cam.orthographicSize += Input.mouseScrollDelta.y * zoomSpeed * Time.deltaTime * (invertZoomDirection ? -1.0f : 1.0f);
+            cam.orthographicSize = Mathf.Clamp(cam.orthographicSize, 0.1f, 100.0f);
         }
 
         transform.position += translation;
