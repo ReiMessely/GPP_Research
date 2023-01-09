@@ -18,7 +18,8 @@ public class GameGrid : MonoBehaviour
     void Start()
     {
         CreateGrid();
-        CreateIntegrationField(new Vector2Int(0,0));
+        CreateIntegrationField(new Vector2Int(6,7));
+        CreateFlowField();
 
         //PrintAllCellCosts();
     }
@@ -59,6 +60,7 @@ public class GameGrid : MonoBehaviour
                 }
 
                 // Set up grid cell data
+                gridCells[x, y] = null;
                 gridCells[x, y] = gameGridObjects[x, y].GetComponent<GridCell>();
                 gridCells[x, y].SetPosition(x, y);
                 gridCells[x, y].cost = 1;
@@ -196,4 +198,26 @@ public class GameGrid : MonoBehaviour
         }
     }
 
+    private void CreateFlowField()
+    {
+        foreach (GridCell cell in gridCells)
+        {
+            List<GridCell> neighbours = GetNeighbours(cell.GetPosition());
+            GridCell lowestCostNeighbour = cell;
+            foreach (GridCell neighbour in neighbours)
+            {
+                if (neighbour.cost < lowestCostNeighbour.cost) 
+                {
+                    lowestCostNeighbour = neighbour;
+                }
+            }
+            if (lowestCostNeighbour == cell)
+            {
+                cell.direction = new Vector3(0, 0, 0);
+                continue;
+            }
+            cell.direction = lowestCostNeighbour.gameObject.transform.position - cell.gameObject.transform.position;
+            cell.direction.Normalize();
+        }
+    }
 }

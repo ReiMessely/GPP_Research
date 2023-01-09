@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
+using TMPro;
+
 public class GridCell : MonoBehaviour
 {
     private int posX;
@@ -13,8 +15,14 @@ public class GridCell : MonoBehaviour
     public int cost;
     public bool impassable;
 
-    private void Start()
+    [SerializeField] GameObject textObject;
+    private TextMeshProUGUI tmpro;
+
+    private void Awake()
     {
+        // Initialise in Awake since grid is made in Start
+        tmpro = textObject.GetComponent<TextMeshProUGUI>();
+
         direction.x = Random.value * 2 - 1;
         direction.y = 0;
         direction.z = Random.value * 2 - 1;
@@ -22,9 +30,19 @@ public class GridCell : MonoBehaviour
         cost = 1;
     }
 
+    private void Start()
+    {
+        
+    }
+
     private void Update()
     {
         Debug.DrawLine(transform.position + Vector3.up * 0.1f, transform.position + direction * 5,Color.red);
+
+        if (tmpro)
+        {
+            tmpro.SetText(cost.ToString());
+        }
     }
 
     public void SetPosition(int x, int y)
