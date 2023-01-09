@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,6 +10,8 @@ public class GridCell : MonoBehaviour
     private int posY;
 
     public Vector3 direction;
+    public int cost;
+    public bool impassable;
 
     private void Start()
     {
@@ -16,6 +19,7 @@ public class GridCell : MonoBehaviour
         direction.y = 0;
         direction.z = Random.value * 2 - 1;
         direction.Normalize();
+        cost = 1;
     }
 
     private void Update()
