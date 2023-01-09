@@ -18,6 +18,14 @@ public class GameGrid : MonoBehaviour
     void Start()
     {
         CreateGrid();
+        foreach (GridCell cell in gridCells)
+        {
+            if ((int)(Random.value*100) % 11 == 0)
+            {
+                cell.impassable = true;
+                cell.GetComponentInChildren<MeshRenderer>().material.color = Color.black;
+            }
+        }
         CreateIntegrationField(new Vector2Int(6,7));
         CreateFlowField();
 
@@ -147,7 +155,12 @@ public class GameGrid : MonoBehaviour
         bool[,] processed = new bool[width,height];
         gridCells[targetCell.x, targetCell.y].cost = 0;
         openList.Add(targetCell);
-
+        GridCell targetGridCell = GetGridCell(targetCell);
+        if (targetGridCell == null)
+        {
+            Debug.Log("Failed to retrieve targetGridCell");
+            return;
+        }
         while (openList.Count > 0) 
         {
             Vector2Int cell = openList.First();
@@ -161,11 +174,6 @@ public class GameGrid : MonoBehaviour
 
             foreach (GridCell neighbour in neighbours) 
             {
-                GridCell targetGridCell = GetGridCell(targetCell);
-                if (targetGridCell == null)
-                {
-                    continue;
-                }
                 float distance = (neighbour.gameObject.transform.position - targetGridCell.gameObject.transform.position).magnitude;
                 if (distance < neighbour.cost && !neighbour.impassable)
                 {

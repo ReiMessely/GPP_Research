@@ -41,7 +41,14 @@ public class GridCell : MonoBehaviour
 
         if (tmpro)
         {
-            tmpro.SetText(cost.ToString());
+            if (impassable)
+            {
+                tmpro.SetText("inf");
+            }
+            else
+            {
+                tmpro.SetText(cost.ToString());
+            }
         }
     }
 
