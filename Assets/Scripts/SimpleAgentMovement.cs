@@ -28,7 +28,10 @@ public class SimpleAgentMovement : MonoBehaviour
         {
             Vector2Int xy = gameGrid.GetGridPosFromWorld(raycast.point);
             GridCell gc = gameGrid.GetGridCell(xy.x,xy.y);
-            transform.position += gc.direction * movementSpeed * Time.deltaTime;
+            if (gc)
+            {
+                transform.position += gc.direction * movementSpeed * Time.deltaTime;
+            }
         }
     }
 }

@@ -229,6 +229,7 @@ GameObject:
   - component: {fileID: 963194227}
   - component: {fileID: 963194226}
   - component: {fileID: 963194229}
+  - component: {fileID: 963194230}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -317,6 +318,20 @@ MonoBehaviour:
   camSpeed: 50
   zoomSpeed: 800
   invertZoomDirection: 1
+--- !u!114 &963194230
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963194225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64010ed0b09095e46acc8054a865e5c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameGridObject: {fileID: 5361607768381474795}
+  DEBUG_MousePosObject: {fileID: 7531162620762045864, guid: ab76a828b47b8fa48ac0f8e2f17403dd, type: 3}
 --- !u!1001 &5361607768381474794
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -374,6 +389,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 95919eac361b73145adb8d21976c2047, type: 3}
+--- !u!1 &5361607768381474795 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5422735480467117886, guid: 95919eac361b73145adb8d21976c2047, type: 3}
+  m_PrefabInstance: {fileID: 5361607768381474794}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8642999999926861070
 PrefabInstance:
   m_ObjectHideFlags: 0

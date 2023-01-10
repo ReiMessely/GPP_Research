@@ -12,7 +12,9 @@ public class GameGrid : MonoBehaviour
 
     [SerializeField] private GameObject gridCellPrefab;
     private GameObject[,] gameGridObjects;
-    private GridCell[,] gridCells; 
+    private GridCell[,] gridCells;
+
+    private Vector2Int currentTargetGridCell;
 
     // Start is called before the first frame update
     void Start()
@@ -151,6 +153,8 @@ public class GameGrid : MonoBehaviour
     {
         ResetFieldCost();
 
+        currentTargetGridCell = targetCell;
+
         List<Vector2Int> openList = new List<Vector2Int>();
         bool[,] processed = new bool[width,height];
         gridCells[targetCell.x, targetCell.y].cost = 0;
@@ -227,5 +231,26 @@ public class GameGrid : MonoBehaviour
             cell.direction = lowestCostNeighbour.gameObject.transform.position - cell.gameObject.transform.position;
             cell.direction.Normalize();
         }
+    }
+
+    public void UpdateTarget(Vector2Int gridPos)
+    {
+        CreateIntegrationField(gridPos);
+        CreateFlowField();
+    }
+
+    public void UpdateTarget(Vector3 worldPos)
+    {
+        Vector2Int gridPos = GetGridPosFromWorld(worldPos);
+        if (IsInGrid(gridPos))
+        {
+            UpdateTarget(gridPos);
+        }
+    }
+
+    public void UpdateTerrainCalcs()
+    {
+        CreateIntegrationField(currentTargetGridCell);
+        CreateFlowField();
     }
 }

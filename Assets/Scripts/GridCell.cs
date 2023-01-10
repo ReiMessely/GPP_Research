@@ -15,13 +15,14 @@ public class GridCell : MonoBehaviour
     public int cost;
     public bool impassable;
 
-    [SerializeField] GameObject textObject;
-    private TextMeshProUGUI tmpro;
+    [SerializeField] private TextMeshProUGUI tmpro;
+    [SerializeField] private GameObject arrowImage;
 
     private void Awake()
     {
         // Initialise in Awake since grid is made in Start
-        tmpro = textObject.GetComponent<TextMeshProUGUI>();
+        tmpro.enabled = true;
+        arrowImage.SetActive(false);
 
         direction.x = Random.value * 2 - 1;
         direction.y = 0;
@@ -49,6 +50,23 @@ public class GridCell : MonoBehaviour
             {
                 tmpro.SetText(cost.ToString());
             }
+        }
+
+        if (arrowImage)
+        {
+            if (direction.magnitude <= float.Epsilon)
+            {
+                arrowImage.SetActive(false);
+            }
+            Vector3 newEuler = new Vector3(arrowImage.transform.rotation.eulerAngles.x, arrowImage.transform.rotation.eulerAngles.y, arrowImage.transform.rotation.eulerAngles.z);
+            newEuler.z = Mathf.Rad2Deg * Mathf.Atan2(direction.z, direction.x) - 45;
+            arrowImage.transform.eulerAngles = newEuler;
+        }
+
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            tmpro.enabled = !tmpro.enabled;
+            arrowImage.SetActive(!tmpro.enabled);
         }
     }
 
