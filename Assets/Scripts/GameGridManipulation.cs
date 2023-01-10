@@ -35,18 +35,45 @@ public class GameGridManipulation : MonoBehaviour
         }
         else if (Input.GetMouseButtonDown(1))
         {
-            Ray screenRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-            // Debug.DrawRay(screenRay.origin, screenRay.direction * 1000, Color.yellow, 5);
-            if (Physics.Raycast(screenRay, out RaycastHit hitInfo, 1000, gridLayer))
+            if (Input.GetKey(KeyCode.E))
             {
-                GridCell cell = gameGrid.GetGridCell(gameGrid.GetGridPosFromWorld(hitInfo.point));
-                if (cell)
+                Ray screenRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+                // Debug.DrawRay(screenRay.origin, screenRay.direction * 1000, Color.yellow, 5);
+                if (Physics.Raycast(screenRay, out RaycastHit hitInfo, 1000, gridLayer))
                 {
-                    cell.impassable = true;
-                    cell.GetComponentInChildren<MeshRenderer>().material.color = Color.black;
-                    gameGrid.UpdateTerrainCalcs();
+                    GridCell cell = gameGrid.GetGridCell(gameGrid.GetGridPosFromWorld(hitInfo.point));
+                    if (cell)
+                    {
+                        cell.MakeImpassable();
+                        gameGrid.UpdateTerrainCalcs();
+                    }
+                    // DEBUG_SpawnDebugSphere(hitInfo.point, Color.yellow);
                 }
-                // DEBUG_SpawnDebugSphere(hitInfo.point, Color.yellow);
+            }
+            else if (Input.GetKey(KeyCode.Q))
+            {
+                Ray screenRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+                if (Physics.Raycast(screenRay, out RaycastHit hitInfo, 1000, gridLayer))
+                {
+                    GridCell cell = gameGrid.GetGridCell(gameGrid.GetGridPosFromWorld(hitInfo.point));
+                    if (cell)
+                    {
+                        Instantiate(agentPrefab, hitInfo.point + Vector3.up, Quaternion.identity);
+                    }
+                }
+            }
+            else 
+            {
+                Ray screenRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+                if (Physics.Raycast(screenRay, out RaycastHit hitInfo, 1000, gridLayer))
+                {
+                    GridCell cell = gameGrid.GetGridCell(gameGrid.GetGridPosFromWorld(hitInfo.point));
+                    if (cell)
+                    {
+                        cell.MakePassable();
+                        gameGrid.UpdateTerrainCalcs();
+                    }
+                }
             }
         }
     }

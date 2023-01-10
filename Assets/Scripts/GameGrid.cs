@@ -24,8 +24,7 @@ public class GameGrid : MonoBehaviour
         {
             if ((int)(Random.value*100) % 11 == 0)
             {
-                cell.impassable = true;
-                cell.GetComponentInChildren<MeshRenderer>().material.color = Color.black;
+                cell.MakeImpassable();
             }
         }
         CreateIntegrationField(new Vector2Int(6,7));
@@ -47,6 +46,18 @@ public class GameGrid : MonoBehaviour
         }
     }
 
+    private void CheckerboardHelper(int x, int y)
+    {
+        if ((x % 2 == 0 && y % 2 == 0) || (x % 2 == 1 && y % 2 == 1))
+        {
+            gridCells[x, y].ChangeColor(Color.gray);
+        }
+        else 
+        {
+            gridCells[x, y].ChangeColor(Color.white);
+        }
+    }
+
     private void CreateGrid()
     {
         if (gridCellPrefab == null) 
@@ -64,17 +75,14 @@ public class GameGrid : MonoBehaviour
                 gameGridObjects[x, y] = Instantiate(gridCellPrefab, new Vector3(x * gridSpaceSize, 0, y * gridSpaceSize), Quaternion.identity);
                 gameGridObjects[x, y].transform.parent = transform;
                 gameGridObjects[x,y].gameObject.name = "GameGridCell (X: " + x.ToString() + ", Y: " + y.ToString() + ")";
-                if ((x % 2 == 0 && y % 2 == 0) || (x % 2 == 1 && y % 2 == 1))
-                {
-                    gameGridObjects[x, y].GetComponentInChildren<MeshRenderer>().material.color = Color.gray;
-                }
 
                 // Set up grid cell data
                 gridCells[x, y] = null;
                 gridCells[x, y] = gameGridObjects[x, y].GetComponent<GridCell>();
                 gridCells[x, y].SetPosition(x, y);
                 gridCells[x, y].cost = 1;
-                gridCells[x, y].impassable = false;
+                gridCells[x, y].totalCost = 1;
+                CheckerboardHelper(x, y);
             }
         }
     }
@@ -119,7 +127,7 @@ public class GameGrid : MonoBehaviour
     {
         foreach (GridCell cell in gridCells)
         {
-            cell.cost = int.MaxValue;
+            cell.totalCost = int.MaxValue;
         }
     }
 
@@ -151,54 +159,60 @@ public class GameGrid : MonoBehaviour
 
     private void CreateIntegrationField(Vector2Int targetCell)
     {
-        ResetFieldCost();
-
-        currentTargetGridCell = targetCell;
-
-        List<Vector2Int> openList = new List<Vector2Int>();
-        bool[,] processed = new bool[width,height];
-        gridCells[targetCell.x, targetCell.y].cost = 0;
-        openList.Add(targetCell);
         GridCell targetGridCell = GetGridCell(targetCell);
         if (targetGridCell == null)
         {
             Debug.Log("Failed to retrieve targetGridCell");
             return;
         }
+        if (targetGridCell.IsImpassable())
+        {
+            Debug.Log("Target is impassable");
+        }
+        ResetFieldCost();
+
+        currentTargetGridCell = targetCell;
+
+        List<Vector2Int> openList = new List<Vector2Int>();
+        bool[,] processed = new bool[width,height];
+        gridCells[targetCell.x, targetCell.y].totalCost = 0;
+        openList.Add(targetCell);
         while (openList.Count > 0) 
         {
-            Vector2Int cell = openList.First();
-            if (processed[cell.x, cell.y])
+            Vector2Int cellGridPos = openList.First();
+            if (processed[cellGridPos.x, cellGridPos.y])
             {
                 openList.RemoveAt(0);
                 continue;
             }
+            GridCell cell = GetGridCell(cellGridPos); 
 
-            List<GridCell> neighbours = GetNeighbours(cell);
+            List<GridCell> neighbours = GetNeighbours(cellGridPos);
 
             foreach (GridCell neighbour in neighbours) 
             {
-                float distance = (neighbour.gameObject.transform.position - targetGridCell.gameObject.transform.position).magnitude;
-                if (distance < neighbour.cost && !neighbour.impassable)
+                int newCost = cell.totalCost + neighbour.cost;
+                if (newCost < neighbour.totalCost && !neighbour.IsImpassable() && newCost >= 0)
                 {
-                    neighbour.cost = (int)distance;
+                    neighbour.totalCost = newCost;
                 }
+
                 if (!openList.Contains(neighbour.GetPosition()))
                 {
                     openList.Add(neighbour.GetPosition());
                 }
             }
 
-            processed[cell.x, cell.y] = true;
+            processed[cellGridPos.x, cellGridPos.y] = true;
 
             openList.RemoveAt(0);
 
             int smallestCost = int.MaxValue;
             foreach (GridCell gridCell in gridCells)
             {
-                if (gridCell.cost < smallestCost)
+                if (gridCell.totalCost < smallestCost)
                 {
-                    smallestCost = gridCell.cost;
+                    smallestCost = gridCell.totalCost;
                     break;
                 }
             }
@@ -218,7 +232,7 @@ public class GameGrid : MonoBehaviour
             GridCell lowestCostNeighbour = cell;
             foreach (GridCell neighbour in neighbours)
             {
-                if (neighbour.cost < lowestCostNeighbour.cost) 
+                if (neighbour.totalCost < lowestCostNeighbour.totalCost) 
                 {
                     lowestCostNeighbour = neighbour;
                 }
@@ -237,6 +251,23 @@ public class GameGrid : MonoBehaviour
     {
         CreateIntegrationField(gridPos);
         CreateFlowField();
+        foreach (GridCell cell in gridCells)
+        {
+            if (cell.IsImpassable())
+            {
+                continue;
+            }
+            else if (cell.totalCost == int.MaxValue)
+            {
+                // Unreachable cells
+                cell.ChangeColor(Color.red);
+            }
+            else
+            {
+                Vector2Int pos = cell.GetPosition();
+                CheckerboardHelper(pos.x, pos.y);
+            }
+        }
     }
 
     public void UpdateTarget(Vector3 worldPos)
@@ -250,7 +281,6 @@ public class GameGrid : MonoBehaviour
 
     public void UpdateTerrainCalcs()
     {
-        CreateIntegrationField(currentTargetGridCell);
-        CreateFlowField();
+        UpdateTarget(currentTargetGridCell);
     }
 }

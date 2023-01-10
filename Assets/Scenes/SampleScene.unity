@@ -331,7 +331,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameGridObject: {fileID: 5361607768381474795}
-  agentPrefab: {fileID: 0}
+  agentPrefab: {fileID: 7213083516738387324, guid: bebc30a485532a44a8940f07c2cf6b7c, type: 3}
   DEBUG_MousePosObject: {fileID: 7531162620762045864, guid: ab76a828b47b8fa48ac0f8e2f17403dd, type: 3}
   gridLayer:
     serializedVersion: 2
@@ -350,34 +350,6 @@ PrefabInstance:
     - target: {fileID: 6311463512195286051, guid: 95919eac361b73145adb8d21976c2047, type: 3}
       propertyPath: m_RootOrder
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6311463512195286051, guid: 95919eac361b73145adb8d21976c2047, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 2.5434048
-      objectReference: {fileID: 0}
-    - target: {fileID: 6311463512195286051, guid: 95919eac361b73145adb8d21976c2047, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -0.6452173
-      objectReference: {fileID: 0}
-    - target: {fileID: 6311463512195286051, guid: 95919eac361b73145adb8d21976c2047, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 1.7275153
-      objectReference: {fileID: 0}
-    - target: {fileID: 6311463512195286051, guid: 95919eac361b73145adb8d21976c2047, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6311463512195286051, guid: 95919eac361b73145adb8d21976c2047, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6311463512195286051, guid: 95919eac361b73145adb8d21976c2047, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6311463512195286051, guid: 95919eac361b73145adb8d21976c2047, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6311463512195286051, guid: 95919eac361b73145adb8d21976c2047, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
