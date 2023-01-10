@@ -81,8 +81,8 @@ public class GameGrid : MonoBehaviour
 
     public Vector2Int GetGridPosFromWorld(Vector3 worldPosition)
     {
-        int x = Mathf.FloorToInt(worldPosition.x / gridSpaceSize);
-        int y = Mathf.FloorToInt(worldPosition.z / gridSpaceSize);
+        int x = Mathf.RoundToInt(worldPosition.x / gridSpaceSize);
+        int y = Mathf.RoundToInt(worldPosition.z / gridSpaceSize);
 
         x = Mathf.Clamp(x, 0, width);
         y = Mathf.Clamp(y, 0, height);

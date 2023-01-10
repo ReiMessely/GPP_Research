@@ -331,7 +331,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameGridObject: {fileID: 5361607768381474795}
+  agentPrefab: {fileID: 0}
   DEBUG_MousePosObject: {fileID: 7531162620762045864, guid: ab76a828b47b8fa48ac0f8e2f17403dd, type: 3}
+  gridLayer:
+    serializedVersion: 2
+    m_Bits: 8
 --- !u!1001 &5361607768381474794
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -429,10 +433,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6742219060821642534, guid: bebc30a485532a44a8940f07c2cf6b7c, type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 34607e63a42214f4eb47324f3c8dbcbc, type: 2}
     - target: {fileID: 7213083516738387324, guid: bebc30a485532a44a8940f07c2cf6b7c, type: 3}
       propertyPath: m_Name
       value: Agent
