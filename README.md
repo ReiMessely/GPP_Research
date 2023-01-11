@@ -1,6 +1,6 @@
 # Flow fields
 
-## Description of the topic (with a graphic of the final result)  
+## Description of the topic
 **Flow fields** are used in games to reduce the computational power spent on pathfinding in case of large crowds, which you can find in Real Time Strategy (RTS) games where you have large armies or some tycoon games like Planet Coaster.
 
 // Demo
