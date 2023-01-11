@@ -27,8 +27,7 @@ public class GameGrid : MonoBehaviour
                 cell.MakeImpassable();
             }
         }
-        CreateIntegrationField(new Vector2Int(6,7));
-        CreateFlowField();
+        UpdateTarget(new Vector2Int(6, 7));
 
         //PrintAllCellCosts();
     }
@@ -253,6 +252,7 @@ public class GameGrid : MonoBehaviour
         CreateFlowField();
         foreach (GridCell cell in gridCells)
         {
+            cell.UpdateDisplay();
             if (cell.IsImpassable())
             {
                 continue;
@@ -262,7 +262,7 @@ public class GameGrid : MonoBehaviour
                 // Unreachable cells
                 cell.ChangeColor(Color.red);
             }
-            else
+            else if (cell.cost == 1)
             {
                 Vector2Int pos = cell.GetPosition();
                 CheckerboardHelper(pos.x, pos.y);

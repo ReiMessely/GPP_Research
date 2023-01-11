@@ -46,6 +46,7 @@ public class GameGridManipulation : MonoBehaviour
                     {
                         cell.MakeImpassable();
                         gameGrid.UpdateTerrainCalcs();
+                        cell.UpdateDisplay();
                     }
                     // DEBUG_SpawnDebugSphere(hitInfo.point, Color.yellow);
                 }
@@ -59,6 +60,20 @@ public class GameGridManipulation : MonoBehaviour
                     if (cell)
                     {
                         Instantiate(agentPrefab, hitInfo.point + Vector3.up, Quaternion.identity);
+                    }
+                }
+            }
+            else if (Input.GetKey(KeyCode.R))
+            {
+                Ray screenRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+                if (Physics.Raycast(screenRay, out RaycastHit hitInfo, 1000, gridLayer))
+                {
+                    GridCell cell = gameGrid.GetGridCell(gameGrid.GetGridPosFromWorld(hitInfo.point));
+                    if (cell)
+                    {
+                        cell.cost = 10;
+                        cell.ChangeColor(Color.yellow);
+                        gameGrid.UpdateTerrainCalcs();
                     }
                 }
             }

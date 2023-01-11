@@ -20,6 +20,13 @@ public class GridCell : MonoBehaviour
     [SerializeField] private GameObject arrowImage;
     private MeshRenderer meshRenderer;
 
+    private enum GridCellDisplayMode
+    {
+        TotalCost, Arrow, Cost
+    }
+
+    private GridCellDisplayMode displayMode = GridCellDisplayMode.TotalCost;
+
     private void Awake()
     {
         // Initialise in Awake since grid is made in Start
@@ -45,41 +52,9 @@ public class GridCell : MonoBehaviour
     {
         Debug.DrawLine(transform.position + Vector3.up * 0.1f, transform.position + direction * 5,Color.red);
 
-        if (tmpro)
-        {
-            if (impassable)
-            {
-                tmpro.SetText("inf");
-            }
-            else if (totalCost == int.MaxValue)
-            {
-                tmpro.SetText("unav");
-            }
-            else
-            {
-                tmpro.SetText(totalCost.ToString());
-            }
-        }
-
-        if (arrowImage)
-        {
-            if (direction.magnitude <= float.Epsilon)
-            {
-                arrowImage.SetActive(false);
-            }
-            else if (!tmpro.enabled)
-            {
-                arrowImage.SetActive(true);
-            }
-            Vector3 newEuler = new Vector3(arrowImage.transform.rotation.eulerAngles.x, arrowImage.transform.rotation.eulerAngles.y, arrowImage.transform.rotation.eulerAngles.z);
-            newEuler.z = Mathf.Rad2Deg * Mathf.Atan2(direction.z, direction.x) - 45;
-            arrowImage.transform.eulerAngles = newEuler;
-        }
-
         if (Input.GetKeyDown(KeyCode.F))
         {
-            tmpro.enabled = !tmpro.enabled;
-            arrowImage.SetActive(!tmpro.enabled);
+            CycleDisplayMode();
         }
     }
 
@@ -117,5 +92,93 @@ public class GridCell : MonoBehaviour
     public void ChangeColor(Color color)
     {
         meshRenderer.material.color = color;
+    }
+
+    private void CycleDisplayMode()
+    {
+        // Cycle through
+        switch (displayMode)
+        {
+            case GridCellDisplayMode.Cost:
+                displayMode = GridCellDisplayMode.TotalCost;
+                break;
+            case GridCellDisplayMode.TotalCost:
+                displayMode = GridCellDisplayMode.Arrow;
+                break;
+            case GridCellDisplayMode.Arrow:
+                displayMode = GridCellDisplayMode.Cost;
+                break;
+        }
+
+        // Do stuff depending on display mode
+        switch (displayMode)
+        {
+            case GridCellDisplayMode.Cost:
+                tmpro.enabled = true;
+                arrowImage.SetActive(false);
+                UpdateDisplay();
+                break;
+            case GridCellDisplayMode.TotalCost:
+                tmpro.enabled = true;
+                arrowImage.SetActive(false);
+
+                UpdateDisplay();
+                break;
+            case GridCellDisplayMode.Arrow:
+                tmpro.enabled = false;
+
+                UpdateDisplay();
+                break;
+        }
+    }
+
+    public void UpdateDisplay()
+    {
+        switch (displayMode)
+        {
+            case GridCellDisplayMode.Cost:
+                if (impassable)
+                {
+                    tmpro.SetText("inf");
+                }
+                else
+                {
+                    tmpro.SetText(cost.ToString());
+                }
+                break;
+            case GridCellDisplayMode.TotalCost:
+                if (impassable)
+                {
+                    tmpro.SetText("inf");
+                }
+                else if (totalCost == int.MaxValue)
+                {
+                    tmpro.SetText("unav");
+                }
+                else
+                {
+                    tmpro.SetText(totalCost.ToString());
+                }
+                break;
+            case GridCellDisplayMode.Arrow:
+                if (tmpro.enabled)
+                {
+                    break;
+                }
+
+                if (direction.magnitude <= float.Epsilon)
+                {
+                    arrowImage.SetActive(false);
+                }
+                else
+                {
+                    arrowImage.SetActive(true);
+                }
+
+                Vector3 newEuler = new Vector3(arrowImage.transform.rotation.eulerAngles.x, arrowImage.transform.rotation.eulerAngles.y, arrowImage.transform.rotation.eulerAngles.z);
+                newEuler.z = Mathf.Rad2Deg * Mathf.Atan2(direction.z, direction.x) - 45;
+                arrowImage.transform.eulerAngles = newEuler;
+                break;
+        }
     }
 }
