@@ -28,21 +28,6 @@ public class GameGrid : MonoBehaviour
             }
         }
         UpdateTarget(new Vector2Int(6, 7));
-
-        //PrintAllCellCosts();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-    private void PrintAllCellCosts()
-    {
-        foreach (GridCell cell in gridCells)
-        {
-            Debug.Log("[" + cell.GetPosition().x.ToString() + ", " + cell.GetPosition().y.ToString() + "] Cost: " + cell.cost);
-        }
     }
 
     private void CheckerboardHelper(int x, int y)
@@ -117,11 +102,6 @@ public class GameGrid : MonoBehaviour
         return null;
     }
 
-    public GridCell GetGridCell(int x, int y)
-    {
-        return gridCells[x,y];
-    }
-
     private void ResetFieldCost()
     {
         foreach (GridCell cell in gridCells)
@@ -174,8 +154,10 @@ public class GameGrid : MonoBehaviour
 
         List<Vector2Int> openList = new List<Vector2Int>();
         bool[,] processed = new bool[width,height];
+
         gridCells[targetCell.x, targetCell.y].totalCost = 0;
         openList.Add(targetCell);
+
         while (openList.Count > 0) 
         {
             Vector2Int cellGridPos = openList.First();

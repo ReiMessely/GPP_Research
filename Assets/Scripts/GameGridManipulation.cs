@@ -7,7 +7,6 @@ public class GameGridManipulation : MonoBehaviour
     [SerializeField] private GameObject gameGridObject;
     private GameGrid gameGrid;
     [SerializeField] private GameObject agentPrefab;
-    [SerializeField] private GameObject DEBUG_MousePosObject;
     [SerializeField] private LayerMask gridLayer;
 
     // Start is called before the first frame update
@@ -22,7 +21,6 @@ public class GameGridManipulation : MonoBehaviour
         if (Input.GetMouseButtonDown(0)) 
         {
             Ray screenRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-            // Debug.DrawRay(screenRay.origin, screenRay.direction * 1000, Color.green, 5);
             if (Physics.Raycast(screenRay, out RaycastHit hitInfo, 1000, gridLayer))
             {
                 GridCell cell = gameGrid.GetGridCell(gameGrid.GetGridPosFromWorld(hitInfo.point));
@@ -30,7 +28,6 @@ public class GameGridManipulation : MonoBehaviour
                 {
                     gameGrid.UpdateTarget(cell.GetPosition());
                 }
-                // DEBUG_SpawnDebugSphere(hitInfo.point, Color.green);
             }
         }
         else if (Input.GetMouseButtonDown(1))
@@ -38,7 +35,6 @@ public class GameGridManipulation : MonoBehaviour
             if (Input.GetKey(KeyCode.E))
             {
                 Ray screenRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-                // Debug.DrawRay(screenRay.origin, screenRay.direction * 1000, Color.yellow, 5);
                 if (Physics.Raycast(screenRay, out RaycastHit hitInfo, 1000, gridLayer))
                 {
                     GridCell cell = gameGrid.GetGridCell(gameGrid.GetGridPosFromWorld(hitInfo.point));
@@ -48,7 +44,6 @@ public class GameGridManipulation : MonoBehaviour
                         gameGrid.UpdateTerrainCalcs();
                         cell.UpdateDisplay();
                     }
-                    // DEBUG_SpawnDebugSphere(hitInfo.point, Color.yellow);
                 }
             }
             else if (Input.GetKey(KeyCode.Q))
@@ -90,15 +85,6 @@ public class GameGridManipulation : MonoBehaviour
                     }
                 }
             }
-        }
-    }
-
-    private void DEBUG_SpawnDebugSphere(Vector3 worldPos, Color color)
-    {
-        if (DEBUG_MousePosObject)
-        {
-            GameObject obj = Instantiate(DEBUG_MousePosObject, worldPos, Quaternion.identity);
-            obj.GetComponent<MeshRenderer>().material.color = color;
         }
     }
 }

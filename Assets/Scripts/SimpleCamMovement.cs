@@ -9,6 +9,8 @@ public class SimpleCamMovement : MonoBehaviour
     [SerializeField] private bool invertZoomDirection = false;
     Camera cam;
 
+    private Vector3 translation = new Vector3(0, 0, 0);
+
     // Start is called before the first frame update
     void Start()
     {
@@ -18,7 +20,8 @@ public class SimpleCamMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Vector3 translation = new Vector3(0,0,0);
+        translation = Vector3.zero;
+
         if (Input.GetKey(KeyCode.W)) 
         {
             translation.y += camSpeed * Time.deltaTime;

@@ -9,8 +9,6 @@ public class SimpleAgentMovement : MonoBehaviour
     [SerializeField] private float movementSpeed = 1.0f;
     [SerializeField] private LayerMask gridCellLayer;
 
-    Rigidbody rb;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -18,7 +16,6 @@ public class SimpleAgentMovement : MonoBehaviour
         {
             gameGrid = FindObjectOfType<GameGrid>();
         }
-        rb = GetComponentInChildren<Rigidbody>();
     }
 
     // Update is called once per frame
@@ -27,7 +24,7 @@ public class SimpleAgentMovement : MonoBehaviour
         if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit raycast, 10, gridCellLayer))
         {
             Vector2Int xy = gameGrid.GetGridPosFromWorld(raycast.point);
-            GridCell gc = gameGrid.GetGridCell(xy.x,xy.y);
+            GridCell gc = gameGrid.GetGridCell(xy);
             if (gc)
             {
                 transform.position += gc.direction * movementSpeed * Time.deltaTime;
