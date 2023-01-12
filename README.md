@@ -3,7 +3,7 @@
 ## Description of the topic
 **Flow fields** are used in games to reduce the computational power spent on pathfinding in case of large crowds, which you can find in Real Time Strategy (RTS) games where you have large armies or some tycoon games like Planet Coaster.
 
-// Demo
+<img src="https://github.com/Wardergrip/GPP_Research/blob/main/Documentation/Demo.gif" alt="A gif depicting a flow field that gets a new target in realtime" width="600">
 
 ## Design/Implementation  
 
@@ -46,5 +46,7 @@ Once the `openList` is empty, each cell's `totalCost` will describe how "long" o
 
 
 ## Result  
+
+https://user-images.githubusercontent.com/42802496/212024349-35e481c2-7ca2-4c63-81e8-a5345e596771.mp4
 
 ## Conclusion / Future work
