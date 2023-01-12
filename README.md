@@ -50,3 +50,5 @@ Once the `openList` is empty, each cell's `totalCost` will describe how "long" o
 https://user-images.githubusercontent.com/42802496/212024349-35e481c2-7ca2-4c63-81e8-a5345e596771.mp4
 
 ## Conclusion / Future work
+
+I can see myself revisiting this topic at some time in the future. I think it would be interesting to introduce negative value tiles which in gameplay terms would speed up the agents. I wish I spent a little more time on cell creation instead of using a prefab, resulting in more varaibles to play with to get a more interesting grid.
